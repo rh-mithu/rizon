@@ -1,6 +1,7 @@
-package rest
+package http
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -9,11 +10,11 @@ import (
 
 func NewRouter(
 	authMiddleware func(http.Handler) http.Handler,
+	authHandler *AuthHandler,
 ) chi.Router {
 	r := chi.NewRouter()
 
 	r.Use(chiMiddleware.Logger)
-	r.Use(authMiddleware)
 
 	// Health Check
 	r.Get("/health", func(w http.ResponseWriter, r *http.Request) {
@@ -21,6 +22,12 @@ func NewRouter(
 		if err != nil {
 			return
 		}
+	})
+	authHandler.RegisterRoutes(r)
+	_ = chi.Walk(r, func(method string, route string, handler http.Handler,
+		middlewares ...func(http.Handler) http.Handler) error {
+		fmt.Printf("%s %s\n", method, route)
+		return nil
 	})
 	return r
 }

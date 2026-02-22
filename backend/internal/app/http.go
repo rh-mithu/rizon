@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"github.com/rh-mithu/rizon/backend/config"
 	"github.com/rh-mithu/rizon/backend/driver/datastore/postgres"
-	"github.com/rh-mithu/rizon/backend/internal/delivery/rest"
+	h "github.com/rh-mithu/rizon/backend/internal/delivery/http"
 	"log"
 	"log/slog"
 	"net/http"
@@ -23,7 +23,7 @@ type App struct {
 }
 
 func New(ctx context.Context, cfg *config.Config, l *slog.Logger) (*App, error) {
-	handler := rest.ProvideHandler(cfg)
+	handler := h.ProvideHandler(cfg)
 	server := &http.Server{
 		Addr:    ":" + cfg.ServicePort,
 		Handler: handler,

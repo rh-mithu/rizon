@@ -11,6 +11,10 @@ type Config struct {
 	ServicePort    string `env:"SERVICE_PORT" envDefault:"8080"`
 	SQLDatabaseURL string `env:"SQL_DATABASE_URL,required"`
 	JWTSecret      string `env:"JWT_SECRET,file,required"`
+	SmtpHost       string `env:"SMTP_HOST,required"`
+	SmtpPort       string `env:"SMTP_PORT,required"`
+	SmtpUser       string `env:"SMTP_USER,required"`
+	SmtpPassword   string `env:"SMTP_PASSWORD,required"`
 }
 
 func Load() (*Config, error) {
